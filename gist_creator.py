@@ -4,8 +4,6 @@ import requests
 import pyperclip
 import sys
 
-auth_header = {}
-
 opts = {"clipboard": False, "description": "", "public": False, "quiet": False}
 
 
@@ -19,7 +17,7 @@ def send_request(file_names):
     if not token:
         exit("Failed to read token from token.txt")
 
-    auth_header["Authorization"] = f"token {token}"
+    auth_header = {"Authorization": f"token {token}"}
     payload = build_payload(opts["description"], opts["public"], file_names)
 
     return requests.post(POST_URL, headers=auth_header, json=payload)
