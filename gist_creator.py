@@ -6,12 +6,8 @@ import sys
 
 auth_header = {}
 
-opts = {
-        "clipboard": False,
-        "description": "",
-        "public": False,
-        "quiet": False
-}
+opts = {"clipboard": False, "description": "", "public": False, "quiet": False}
+
 
 def send_request(file_names):
     POST_URL = "https://api.github.com/gists"
@@ -22,15 +18,16 @@ def send_request(file_names):
 
     if not token:
         exit("Failed to read token from token.txt")
-    
+
     auth_header["Authorization"] = f"token {token}"
     payload = build_payload(opts["description"], opts["public"], file_names)
 
     return requests.post(POST_URL, headers=auth_header, json=payload)
 
+
 def build_payload(description, public, file_names):
     payload = {}
-    
+
     payload["description"] = description
     payload["public"] = public
 
@@ -45,10 +42,11 @@ def build_payload(description, public, file_names):
         except FileNotFoundError:
             log(f"File {name} could not be found, skipping ...")
             continue
-    
+
     payload["files"] = files_json
 
     return payload
+
 
 def parse_args():
     file_names = []
@@ -65,7 +63,8 @@ def parse_args():
             elif arg == "--description":
 
                 if i + 1 >= len(sys.argv):
-                    log("--description passed, but no description string was found")
+                    log("--description passed, but no description string was"
+                        " found")
                     exit(1)
 
                 opts["description"] = sys.argv[i + 1]
@@ -93,9 +92,11 @@ def parse_args():
 
     return file_names
 
+
 def log(string):
     if not opts["quiet"]:
         print(string)
+
 
 if __name__ == "__main__":
 
@@ -107,11 +108,12 @@ if __name__ == "__main__":
     if response.status_code == 201:
         data = response.json()
         html_url = data["html_url"]
-        
+
         log(f"Gist successfully created at {html_url}")
         if opts["clipboard"]:
             pyperclip.copy(html_url)
             log("(Also copied to clipboard.)")
     else:
         log(response.text)
-        exit(f"Request was not successful, received status code {response.status_code}")
+        exit(f"Request was not successful, received status code"
+             " {response.status_code}")
