@@ -54,6 +54,14 @@ def build_payload(description, public, file_names):
     return payload
 
 
+"""
+Later options override earlier ones.
+For example, `gist-create --public --secret foo.txt` would make the created
+Gist secret. This might be useful when aliasing `gist-create` with default
+options and overriding these in some cases.
+"""
+
+
 def parse_args():
     file_names = []
 
