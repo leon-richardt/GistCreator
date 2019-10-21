@@ -1,7 +1,13 @@
 #!/bin/python3
 
 import requests
-import pyperclip
+
+pyperclip_found = True
+try:
+    import pyperclip
+except ModuleNotFoundError:
+    pyperclip_found = False
+
 import sys
 import webbrowser
 
@@ -149,9 +155,15 @@ if __name__ == "__main__":
         html_url = data["html_url"]
 
         log(f"Gist successfully created at {html_url}")
+
         if opts["clipboard"]:
-            pyperclip.copy(html_url)
-            log("(Also copied to clipboard.)")
+            if pyperclip_found:
+                pyperclip.copy(html_url)
+                log("(Also copied to clipboard.)")
+            else:
+                log("Could not import pyperclip module."
+                    " Copying to clipboard disabled.")
+
         if opts["open"]:
             # Open URL in new tab
             webbrowser.open_new_tab(html_url)

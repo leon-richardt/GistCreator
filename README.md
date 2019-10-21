@@ -4,7 +4,7 @@ A dumb wrapper for creating GitHub Gists from the command line.
 
 # Dependencies
 * [`requests`](https://pypi.org/project/requests/) for HTTP requests to the GitHub API
-* [`pyperclip`](https://pypi.org/project/pyperclip/) for cross-platform clipboard support
+* [`pyperclip`](https://pypi.org/project/pyperclip/) (optional) for cross-platform clipboard support
 
 # Usage
 
