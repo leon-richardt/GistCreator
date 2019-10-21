@@ -3,8 +3,15 @@
 import requests
 import pyperclip
 import sys
+import webbrowser
 
-opts = {"clipboard": False, "description": "", "public": False, "quiet": False}
+opts = {
+    "clipboard": False,
+    "description": "",
+    "open": False,
+    "public": False,
+    "quiet": False
+}
 
 
 def send_request(file_names):
@@ -69,6 +76,8 @@ def parse_args():
                 opts["description"] = sys.argv[i + 1]
                 # One additional increment for the description string
                 i = i + 1
+            elif arg == "--open":
+                opts["open"] = True
             elif arg == "--public":
                 opts["public"] = True
             elif arg == "--quiet":
@@ -112,6 +121,9 @@ if __name__ == "__main__":
         if opts["clipboard"]:
             pyperclip.copy(html_url)
             log("(Also copied to clipboard.)")
+        if opts["open"]:
+            # Open URL in new tab
+            webbrowser.open_new_tab(html_url)
     else:
         log(response.text)
         exit(f"Request was not successful, received status code"
