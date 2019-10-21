@@ -65,6 +65,7 @@ options and overriding these in some cases.
 def parse_args():
     file_names = []
 
+    # TODO: Unify parsing of long & short opts
     # Skip program name when parsing arguments
     i = 1
     while i < len(sys.argv):
@@ -99,8 +100,30 @@ def parse_args():
                 # stdin
                 file_names.append("-")
             else:
-                # TODO: Short opts
-                pass
+                # Short opts
+                for char in arg[1:]:
+                    if char == "c":
+                        opts["clipboard"] = True
+                    elif char == "d":
+                        if i + 1 >= len(sys.argv):
+                            log("--description passed, but no description string was"
+                                " found")
+                            exit(1)
+
+                        opts["description"] = sys.argv[i + 1]
+                        # One additional increment for the description string
+                        i = i + 1
+                    elif char == "o":
+                        opts["open"] = True
+                    elif char == "p":
+                        opts["public"] = True
+                    elif char == "q":
+                        opts["quiet"] = True
+                    elif char == "s":
+                        opts["public"] = False
+                    else:
+                        exit(f"Unknown switch '{char}' found")
+                i = i + 1
         else:
             # Files
             file_names.append(arg)
