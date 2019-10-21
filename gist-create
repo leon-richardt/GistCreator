@@ -32,6 +32,7 @@ def build_payload(description, public, file_names):
     files_json = {}
 
     # Read all files into list, skipping those that can not be found
+    # TODO: Fail if one of the files can't be found?
     for name in file_names:
         # TODO: Handle stdin
         try:
